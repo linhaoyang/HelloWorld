@@ -1,0 +1,99 @@
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        
+        int start = 0;
+        int end = 0;
+        
+        int tmpStart = 0;
+        int tmpEnd = 0;
+        
+        for(int i = 0;i<s.size();i++){
+            
+            tmpStart = i-1;
+            tmpEnd = i+1;
+            
+            findLongestPalindromic(s,tmpStart,tmpEnd);
+            
+            if(tmpEnd-tmpStart > end - start){
+                start = tmpStart;
+                end = tmpEnd;
+            }
+            
+            
+            tmpStart = i;
+            tmpEnd = i+1;
+            
+            findLongestPalindromic(s,tmpStart,tmpEnd);
+                 
+            if(tmpEnd-tmpStart > end - start){
+                start = tmpStart;
+                end = tmpEnd;
+            }
+            
+        }
+        
+        return s.substr(start,end-start+1);
+        
+    }
+    
+    void findLongestPalindromic(string s,int& start,int& end){
+        
+        while(true){
+            if(start<0||end>=s.size())
+                break;
+            
+            if(s[start] != s[end])
+                break;
+                
+            start--;
+            end++;
+        }
+        
+        start++;
+        end--;
+        
+        return;
+    }
+    
+    
+};
+
+==============================================================================================================
+
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        if (s.size() < 2) {return s;}
+        
+        int min_left = 0;
+        int max_len = 1;
+        int max_right = s.size() - 1;
+        
+        for (int i = 0; i < s.size(); i++) {
+            int right = i;
+            int left = i;
+            int curr_len;
+            
+            //Skip duplicate characters in the middle
+            while (right < max_right && s[right+1] == s[right]) {
+                right++;
+            }
+            
+            //Expand for largest palindrome
+            while (left > 0 && s[left-1] == s[right+1]) {
+                left--;
+                right++;
+            }
+            
+            curr_len = right - left + 1;
+            if (curr_len > max_len) {
+                min_left = left;
+                max_len = curr_len;
+            }
+            
+        }
+        
+        return s.substr(min_left, max_len);
+    }
+};

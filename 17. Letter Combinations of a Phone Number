@@ -1,0 +1,65 @@
+class Solution {
+public:
+	vector<string> letterCombinations(string digits) {
+
+		vector<string> result1;
+		vector<string> result2;
+		string abc = "abcdefghijklmnopqrstuvwxyz";
+		vector<int> num = { 0,0,0,3,6,9,12,15,19,22,26 };
+
+		for (int i = 0; i<digits.size(); i++) {
+
+			int index = (int)(digits[i] - '0');
+			int start = num[index];
+			int count = num[index + 1] - start;
+
+			vector<string> &last = result1.size() < result2.size() ? result2 : result1;
+			vector<string> &current = result1.size() < result2.size() ? result1 : result2;
+
+			current.clear();
+
+			for (int j = 0; j<count; j++) {
+
+				char c = abc[start + j];
+
+				for (int k = 0; k<last.size(); k++) {
+
+					current.push_back(last[k] + c);
+
+				}
+
+				if (last.size() <= 0) {
+					string a(1, c);
+					current.push_back(a);
+				}
+			}
+
+		}
+
+		return  result1.size() < result2.size() ? result2 : result1;
+
+	}
+};
+
+=====================================================================================
+
+vector<string> letterCombinations(string digits) {
+    vector<string> result;
+    if(digits.empty()) return vector<string>();
+    static const vector<string> v = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+    result.push_back("");   // add a seed for the initial case
+    for(int i = 0 ; i < digits.size(); ++i) {
+        int num = digits[i]-'0';
+        if(num < 0 || num > 9) break;
+        const string& candidate = v[num];
+        if(candidate.empty()) continue;
+        vector<string> tmp;
+        for(int j = 0 ; j < candidate.size() ; ++j) {
+            for(int k = 0 ; k < result.size() ; ++k) {
+                tmp.push_back(result[k] + candidate[j]);
+            }
+        }
+        result.swap(tmp);
+    }
+    return result;
+}

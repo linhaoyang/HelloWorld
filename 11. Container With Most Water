@@ -1,0 +1,36 @@
+算最大可能值时,从一个较大的值开始,只往值有可能变大的方向遍历
+
+
+class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        
+        int result = 0;
+        int left = 0;
+        int right = height.size()-1;
+        
+        while(left < right){
+            
+            int r = height[right] > height[left]?height[left]:height[right];
+            
+            int area = (right - left) * r;
+            
+            if(area > result){
+                result  = area;
+            }
+            
+            if(height[right] > height[left]){
+                
+                left++;
+            }else{
+                right--;
+                
+            }
+            
+        }
+        
+        return result;
+        
+        
+    }
+};

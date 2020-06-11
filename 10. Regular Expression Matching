@@ -1,0 +1,190 @@
+class Solution {
+public:
+	bool isMatch(string s, string p) {
+
+		if (p.empty()) return s.empty();
+
+		if (p.size()>1 && p[1] == '*') {
+			
+			return isMatch(s, p.substr(2)) || s.size()>0 && (p[0] == s[0] || p[0] == '.') && isMatch(s.substr(1),p);
+		}
+		else
+		{
+			return s.size()>0 && (p[0] == s[0] || p[0] == '.')&& isMatch(s.substr(1),p.substr(1));
+			
+		}
+
+		return false;
+
+	}
+};
+
+=======================================================================================
+
+class Solution {
+public:
+	bool isMatch(string s, string p) {
+
+		int rows = p.size() + 1;
+		int cols = s.size() + 1;
+	
+		int** mm = CreateMatrix(rows, cols);
+
+		InitMatrx(mm, rows, cols, p, s);
+	
+		PrintMatrix(mm, rows, cols, p , s);
+
+		for (int i = 1; i < rows; ++i)
+		{
+			for (int j = 1; j < cols; ++j)
+			{      //modify matrix
+				if (p[i - 1] == '.'||p[i-1]==s[j-1]) {
+				
+					mm[i][j] += mm[i - 1][j - 1];
+				}
+				else if(p[i - 1] == '*')
+				{
+					if (p[i - 2] == s[j - 1] || p[i - 2] == '.') {
+						mm[i][j] += mm[i][j - 1];
+						mm[i][j] += mm[i-2][j];
+
+					}
+					else
+					{
+						mm[i][j] += mm[i - 2][j];
+					}
+
+				}
+				else
+				{
+					mm[i][j] = 0;
+				}
+			}
+		}
+
+		PrintMatrix(mm, rows, cols, p, s);
+
+		return mm[rows - 1][cols - 1] > 0;
+
+	}
+
+	void InitMatrx(int** matrix, int rows, int cols, string p, string s) {
+	
+		for (int i = 0; i < rows; ++i)
+		{
+			for (int j = 0; j < cols; ++j)
+			{      //modify matrix
+				matrix[i][j] = 0;
+			}
+		}
+		matrix[0][0] = 1;
+
+		for (int i = 1; i < rows; i++) {
+		
+			if (p[i-1] == '*')
+			{
+				matrix[i][0] = matrix[i - 2][0];
+			}
+		}
+
+	}
+
+	int** CreateMatrix(int rows, int cols) {
+	
+		int** matrix = new int*[rows];
+		for (int i = 0; i < rows; ++i)
+			matrix[i] = new int[cols];
+
+		return matrix;
+	}
+
+	void PrintMatrix(int** matrix,int rows,int cols, string p, string s) {
+
+		string a = "    ";
+
+		for (int i = 0; i < s.size(); i++) {
+			a.push_back(s[i]);
+			a += " ";
+		}
+		a += "\n";
+
+		for (int i = 0; i < rows; ++i)
+		{
+			for (int j = 0; j < cols; ++j)
+			{      //modify matrix
+				if (j == 0) {
+					if (i == 0) {
+						a += "  ";
+					}
+					else
+					{
+						a.push_back(p[i - 1]);
+						a += " ";
+					}
+				}
+
+				a += std::to_string(matrix[i][j]);
+				a += " ";
+			}
+
+			a += "\n";
+		}
+
+		cout << "Matrix:\n" << a;
+	
+	}
+};
+
+=======================================================================================
+
+class Solution {
+	bool helper(const string& s, int j, const string& p, int i)
+	{
+		if (j == 0 && i == 0)
+			return true;
+		if (i == 0)
+			return false;
+		if (j == 0)
+		{
+			while (i>0)
+			{
+				if (p[i-1] != '*')
+					return false;
+				i -= 2;
+			}
+			return i == 0;
+		}
+
+		if (s[j-1] == p[i-1] || p[i-1] == '.')
+		{
+			return helper(s, j - 1, p, i - 1);
+		}
+		else
+		{
+			if (p[i-1] != '*')
+			{
+				return false;
+			}
+			else
+			{
+				if (i>0 && (p[i - 2] == s[j-1]||p[i-2]=='.'))
+				{
+					if (helper(s, j - 1, p, i))
+					{
+						return true;
+					}
+				}
+				return helper(s, j, p, i - 2);
+			}
+		}
+		return false;
+	}
+public:
+	bool isMatch(string s, string p) {
+		if (p.empty())
+			return s.empty();
+        
+		int j = s.size(), i = p.size();
+		return helper(s, j, p, i);
+	}
+};

@@ -1,0 +1,128 @@
+
+二分查找优雅写法
+
+  int search(vector<int>& nums, int target) {
+        
+        int low = 0;
+        int high = nums.size();
+        
+        while(low<high){
+            int mid = low+(high-low)/2;
+            
+            if(target==nums[mid]){
+                return mid;
+            }
+            
+            if(target<nums[mid]){
+                
+                high = mid;
+            }else{
+                
+                low = mid+1;
+            }
+            
+            
+        }
+        
+        return -1;
+        
+    }
+
+==============================================================================================
+
+class Solution {
+public:
+    
+  
+    vector<int> searchRange(vector<int>& nums, int target) {
+        
+        vector<int> result;
+        
+        if(nums.size() ==0){
+            
+            result.push_back(-1);
+            result.push_back(-1);
+            
+            return result;
+            
+        }
+        
+        
+        int index = findTargetBinary(nums,0,nums.size(),target);
+        
+        int last = index;
+        int first = index;
+        
+        if(index > 0){
+            
+            while(last+1<nums.size()&&nums[last+1] ==target){
+                last++;
+            }
+            
+            while(first-1>-1&&nums[first-1] ==target){
+                first--;
+            }
+            
+        }
+        
+      
+        result.push_back(first);
+         result.push_back(last);
+        
+        return result;
+    }
+    
+       int findTargetBinary(vector<int>& nums, int start,int end,int target){
+        
+        int midIndex = start+(end-start)/2;
+        
+        if(end - start <= 1){
+            if(nums[start] == target){
+                return start;
+            }
+            return -1;
+            
+        }
+        
+        if(target == nums[midIndex]){
+            return midIndex;
+        }else if(target< nums[midIndex]){
+            return findTargetBinary(nums,start,midIndex,target);
+        }else{
+            return findTargetBinary(nums,midIndex+1,end,target);
+        }
+        
+        return -1;
+        
+    }
+    
+};
+
+
+=========================================================================================================
+
+int binarySearch(int arr[], int l, int r, int x)
+{
+   if (r >= l)
+   {
+        int mid = l + (r - l)/2;
+ 
+        // If the element is present at the middle 
+        // itself
+        if (arr[mid] == x)  
+            return mid;
+ 
+        // If element is smaller than mid, then 
+        // it can only be present in left subarray
+        if (arr[mid] > x) 
+            return binarySearch(arr, l, mid-1, x);
+ 
+        // Else the element can only be present
+        // in right subarray
+        return binarySearch(arr, mid+1, r, x);
+   }
+ 
+   // We reach here when element is not 
+   // present in array
+   return -1;
+}

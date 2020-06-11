@@ -1,0 +1,48 @@
+
+
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+
+        int targetIndex = -1;
+        
+        for(int i = 0;i < nums.size();i++){
+            if(target < nums[i]){
+                break;
+            }
+            if(nums[i] == target){
+                targetIndex = i;
+                break;
+            }
+            
+            if(i>0 && nums[i] < nums[i-1]){
+                break;
+            }
+            
+        }
+        
+        if(targetIndex > 0) return targetIndex;
+        
+        int count = nums.size()-1;
+        
+        for(int i = count;i > -1;i--){
+            if(target > nums[i]){
+                break;
+            }
+            if(nums[i] == target){
+                targetIndex = i;
+                break;
+            }
+            
+            if(i< count && nums[i] > nums[i+1]){
+                break;
+            }
+            
+        }
+        
+        return targetIndex;
+        
+    }
+};
+
+============================================================================================================
