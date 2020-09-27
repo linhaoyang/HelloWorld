@@ -90,4 +90,53 @@ private:
         data = data.substr(pos+1);
         return val;
     }
-};`
+};
+
+-------------------------------------------------------------------
+BFS!!!
+	
+    public String serialize(TreeNode root) { //O(n);O(w)
+        if (root == null) {
+            return "";
+        }
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        StringBuilder res = new StringBuilder();
+        while (!queue.isEmpty()) {
+            TreeNode head = queue.poll();
+            if (head == null) {
+                res.append("#,");
+                continue;
+            }
+            res.append(head.val + ",");
+            queue.offer(head.left);
+            queue.offer(head.right);
+        }
+        return res.toString();
+    }
+
+    public TreeNode deserialize(String data) { //O(n);O(n)
+        if (data == "") {
+            return null;
+        }
+
+        String[] values = data.split(",");
+        TreeNode root = new TreeNode(Integer.parseInt(values[0]));
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        for (int i = 1; i < values.length; i++) {
+            TreeNode parent = queue.poll();
+            if (!values[i].equals("#")) {
+                TreeNode left = new TreeNode(Integer.parseInt(values[i]));
+                parent.left = left;
+                queue.offer(left);
+            }
+            if (!values[++i].equals("#")) {
+                TreeNode right = new TreeNode(Integer.parseInt(values[i]));
+                parent.right = right;
+                queue.offer(right);
+            }
+        }
+        return root;
+    }
