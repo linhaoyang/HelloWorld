@@ -1,3 +1,6 @@
+注意Queue与List的配合遍历 
+BFS与Queue的联想
+----------------------------------------------------
 unfinished
 
 class Codec {
