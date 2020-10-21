@@ -12,28 +12,26 @@ The problems that can be solved using this tool generally satisfy the following 
 
 ---
 
-### Divide and Conquer 分而治之:
-1. 该问题的规模缩小到一定的程度就可以容易地解决
+##### 最优子结构: 
+> 最优子结构想表达的是，如果一个问题的最优解包含其子问题的最优解，那么我们就称这个问题有最优子结构性质。也就是说，一个问题的最优解一定是由其各个子问题的最优解组合而成的。
 
-2. 该问题可以分解为若干个规模较小的相同问题。  问题一样,规模变小!
+### Divide and Conquer 分而治之特点:
 
-3. 利用该问题分解出的子问题的解可以合并为该问题的解；
+满足两条性质:
 
-4. 该问题所分解出的各个子问题是相互独立的，即子问题之间不包含公共的子子问题。(非必需）
+1. 具有最优子结构，该问题可以分解为若干个规模较小的**相同**子问题。即问题一样,规模变小!
 
-- 对使用条件的分析
-第1条随着问题规模的减少，问题自然会容易解决。条件2，3是分治的前提。即Divide-and-Conquer的必要条件。 
-第4条，对于存在公共子问题的问题，使用分治算法会存在重复计算的问题，使用动态规划较为合适。
+2.  该问题所分解出的各个子问题是相互**独立**的，并且它们的解可以**合并**为最终该问题的解；
 
-##### 浅谈分治与动态规划
-分治和动态规划有共通也有不同，我们来看如下两个定义。
+### DP 动态规划特点
+满足三条性质:
 
-最优子结构：如果问题的一个最优解中包含了子问题的最优解，则该问题具有最优子机构。
+1. 具有最优子结构
+2. 重叠子问题：
+   这个问题相对就容易理解很多。如果我们在递归求解的过程中，反复的求解了相同的子问题，那么就称这个问题有**重叠**子问题。
 
-重叠子问题：用来求解原问题的递归算法反复地解同样的子问题，而不是总是在产生新的子问题。对两个子问题来说，如果它们确实是相同的子问题，只是作为不同问题的子问题出现的话，则它们是重叠的。
-
-当子问题相互独立时，能且只能使用分治。存在重叠子问题时，动态规划是更好的算法。 
-In a word, 分治法 —— 各子问题独立；动态规划 —— 各子问题重叠。
+3. 状态的无后效性: 
+   状态的无后效性指的是，**当一个状态被确定之后，一定不会被在其之后确定的状态所影响**。也就是说，每个状态的确定都不会影响到之前已经确定的状态。 或者说，一个子问题的解是在 子子 问题中选择得到的，那么在计算出子问题的解之后，子问题的解不会影响到 子子 问题。
 
 ---
 
@@ -43,6 +41,13 @@ The Greedy algorithm has only one shot to compute the optimal solution so that i
 
 ---
 
-# 结构 Insight
+# 数据结构分析
+## Tree-based Data Structure
 ### Heap
+- Complete Tree,Parent always larger than children(max heap)
 - 常用于处理最大最小问题,并且不需要sort时
+
+### BinaryTree
+- The left subtree of a node contains only nodes with keys lesser than the node’s key.
+- The right subtree of a node contains only nodes with keys greater than the node’s key.
+- The left and right subtree each must also be a binary search tree.
